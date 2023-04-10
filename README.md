@@ -9,31 +9,33 @@ Start the game with the launch options ``-novr -vsync``.
 
 ## Controls
 ### Keyboard and Mouse
-Left Click: Select in Main Menu/Throw Held Object/Primary Attack
+UPARROW,LEFTARROW,DOWNARROW,RIGHTARROW : Move
 
-W, A, S, D: Move
+the "0" key on the Number Pad : Jump
 
-Space: Jump
+right CTRL key. : Crouch
 
-Ctrl: Crouch
+mouse BUTTON4 : Sprint
 
-Shift: Sprint
+delete : Interact/Pick Up Object
 
-E: Interact/Pick Up Object
+NUMPAD4: Flashlight (if you have it)
 
-F: Flashlight (if you have it)
-
-H: Cover your mouth
+NUMPAD1 : Cover your mouth
 
 F5: Quick Save
 
 F9: Quick Load
 
-M: Main Menu
+end: Main Menu
 
-P: Pause
+PAGEUP : Pause
 
-V: Noclip (if you get stuck)
+PAGEDOWN : Noclip (if you get stuck)
+
+NUMPAD4 : Flashlight (if you have it)
+
+NUMPAD1 : Cover your mouth
 
 ## Official Discord Server
 https://discord.gg/AyfBeuZXsR
