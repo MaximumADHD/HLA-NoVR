@@ -454,13 +454,11 @@ if GlobalSys:CommandLineCheck("-novr") then
             ent:RedirectOutput("OnTrigger", "GoToMainMenu", ent)
         else
             SendToConsole("binddefaults")
-            SendToConsole("bind space jumpfixed")
-            SendToConsole("bind e \"+use;useextra\"")
-            SendToConsole("bind v noclip")
+            SendToConsole("bind kp_0 jumpfixed")
             SendToConsole("hl2_sprintspeed 140")
             SendToConsole("bind F5 \"save quick;play sounds/ui/beepclear.vsnd;ent_fire text_quicksave showmessage\"")
             SendToConsole("bind F9 \"load quick\"")
-            SendToConsole("bind M \"map startup\"")
+            SendToConsole("bind END \"map startup\"")
             SendToConsole("bind MOUSE2 +customattack2")
             SendToConsole("bind MOUSE3 +customattack3")
             SendToConsole("r_drawviewmodel 0")
@@ -489,7 +487,16 @@ if GlobalSys:CommandLineCheck("-novr") then
             SendToConsole("sk_plr_dmg_pistol 7")
             SendToConsole("sk_plr_dmg_ar2 9")
             SendToConsole("sk_plr_dmg_smg1 5")
-            SendToConsole("bind h +covermouth")
+            SendToConsole("bind KP_1 +covermouth")
+            SendToConsole("bind uparrow +iv_forward")
+            SendToConsole("bind downarrow +iv_back")
+            SendToConsole("bind leftarrow +iv_left")
+            SendToConsole("bind rightarrow +iv_right")
+            SendToConsole("bind MOUSE4 +iv_sprint")
+            SendToConsole("bind DEL +use;useextra")
+            SendToConsole("bind PGUP pause")
+            SendToConsole("bind PGDN noclip")
+            SendToConsole("bind KP_4 +iv_sprint")
 
             ent = Entities:FindByName(nil, "lefthand")
             if not ent then
@@ -530,7 +537,7 @@ if GlobalSys:CommandLineCheck("-novr") then
                     SendToConsole("mouse_disableinput 1")
                     SendToConsole("give weapon_bugbait")
                     SendToConsole("hidehud 4")
-                    SendToConsole("bind h \"\"")
+                    SendToConsole("bind KP_1 \"\"")
                 else
                     MoveFreely()
                 end
@@ -633,10 +640,10 @@ if GlobalSys:CommandLineCheck("-novr") then
 
                     ent = Entities:GetLocalPlayer()
                     if ent:Attribute_GetIntValue("has_flashlight", 0) == 1 then
-                        SendToConsole("bind F inv_flashlight")
+                        SendToConsole("bind KP_4 inv_flashlight")
                     end
                 elseif GetMapName() ~= "a2_hideout" then
-                    SendToConsole("bind F inv_flashlight")
+                    SendToConsole("bind KP_4 inv_flashlight")
                     SendToConsole("give weapon_shotgun")
 
                     if GetMapName() == "a2_drainage" then
@@ -759,7 +766,7 @@ if GlobalSys:CommandLineCheck("-novr") then
                         elseif GetMapName() == "a5_ending" then
                             SendToConsole("ent_remove weapon_pistol;ent_remove weapon_shotgun;ent_remove weapon_ar2")
                             SendToConsole("r_drawviewmodel 0")
-                            SendToConsole("bind F \"\"")
+                            SendToConsole("bind KP_4 \"\"")
 
                             ent = Entities:FindByName(nil, "relay_advisor_void")
                             ent:RedirectOutput("OnTrigger", "GiveAdvisorVortEnergy", ent)
@@ -787,7 +794,7 @@ if GlobalSys:CommandLineCheck("-novr") then
         SendToConsole("mouse_disableinput 0")
         SendToConsole("ent_fire player_speedmod ModifySpeed 1")
         SendToConsole("hidehud 96")
-        SendToConsole("bind h +covermouth")
+        SendToConsole("bind KP_1 +covermouth")
     end
 
     function AcceptEliCall(a, b)

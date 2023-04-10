@@ -373,9 +373,9 @@ if class == "prop_hlvr_crafting_station_console" then
                     -- TODO: ent_create point_clientui_world_movie_panel {src_movie "file://{resources}/videos/wupgrade_frabrication.webm" targetname test width 200 height 100 }
                 end
                 thisEntity:SetGraphParameterBool("bCollectingResin", false)
-                SendToConsole("bind KP_0 \"\"")
-                SendToConsole("bind KP_1 \"\"")
-                SendToConsole("bind KP_2 \"\"")
+                SendToConsole("bind KP_7 \"\"")
+                SendToConsole("bind KP_8 \"\"")
+                SendToConsole("bind KP_9 \"\"")
             end
         elseif thisEntity:Attribute_GetIntValue("cancel_cooldown_done", 1) == 1 and thisEntity:GetGraphParameter("bCrafting") == false then
             thisEntity:SetGraphParameterBool("bCollectingResin", true)
@@ -387,7 +387,7 @@ if class == "prop_hlvr_crafting_station_console" then
                 if viewmodel:GetModelName() == "models/pistol.vmdl" then
                     SendToConsole("ent_fire weapon_pistol kill 0.02")
                     SendToConsole("impulse 200")
-                    SendToConsole("ent_fire text_resin SetText \"Choose upgrade with numpad: [1] Reflex Sight (10 Resin), [2] Burst Fire (20 Resin), [0] Cancel\"")
+                    SendToConsole("ent_fire text_resin SetText \"Choose upgrade with numpad: [7] Reflex Sight (10 Resin), [8] Burst Fire (20 Resin), [9] Cancel\"")
                     SendToConsole("ent_fire text_resin Display")
                     Convars:SetStr("weapon_in_crafting_station", "pistol")
                     local console = Entities:FindByClassname(nil, "prop_hlvr_crafting_station_console")
@@ -400,16 +400,16 @@ if class == "prop_hlvr_crafting_station_console" then
                     ent:SetParent(console, "item_attach")
 
                     if player:Attribute_GetIntValue("pistol_upgrade_aimdownsights", 0) == 0 then
-                        SendToConsole("bind KP_1 chooseupgrade1")
+                        SendToConsole("bind KP_7 chooseupgrade1")
                     elseif player:Attribute_GetIntValue("pistol_upgrade_burstfire", 0) == 0 then
-                        SendToConsole("bind KP_2 chooseupgrade2")
+                        SendToConsole("bind KP_8 chooseupgrade2")
                     end
 
-                    SendToConsole("bind KP_0 cancelupgrade")
+                    SendToConsole("bind KP_9 cancelupgrade")
                 elseif viewmodel:GetModelName() == "models/shotgun.vmdl" then
                     SendToConsole("ent_fire weapon_shotgun kill 0.02")
                     SendToConsole("impulse 200")
-                    SendToConsole("ent_fire text_resin SetText \"Choose upgrade with numpad: [1] Double Shot (10 Resin), [2] Grenade Launcher (20 Resin), [0] Cancel\"")
+                    SendToConsole("ent_fire text_resin SetText \"Choose upgrade with numpad: [7] Double Shot (10 Resin), [8] Grenade Launcher (20 Resin), [9] Cancel\"")
                     SendToConsole("ent_fire text_resin Display")
                     Convars:SetStr("weapon_in_crafting_station", "shotgun")
                     local console = Entities:FindByClassname(nil, "prop_hlvr_crafting_station_console")
@@ -422,12 +422,12 @@ if class == "prop_hlvr_crafting_station_console" then
                     ent:SetParent(console, "item_attach")
                     
                     if player:Attribute_GetIntValue("shotgun_upgrade_grenadelauncher", 0) == 0 then
-                        SendToConsole("bind KP_1 chooseupgrade1")
+                        SendToConsole("bind KP_7 chooseupgrade1")
                     elseif player:Attribute_GetIntValue("shotgun_upgrade_doubleshot", 0) == 0 then
-                        SendToConsole("bind KP_2 chooseupgrade2")
+                        SendToConsole("bind KP_8 chooseupgrade2")
                     end
 
-                    SendToConsole("bind KP_0 cancelupgrade")
+                    SendToConsole("bind KP_9 cancelupgrade")
                 elseif viewmodel:GetModelName() == "models/smg.vmdl" then
                     if player:Attribute_SetIntValue("smg_upgrade_fasterfirerate", 0) == 0 then
                         SendToConsole("ent_fire weapon_ar2 kill 0.02")
@@ -435,7 +435,7 @@ if class == "prop_hlvr_crafting_station_console" then
                         SendToConsole("ent_fire weapon_smg1 kill 0.02")
                     end
                     SendToConsole("impulse 200")
-                    SendToConsole("ent_fire text_resin SetText \"Choose upgrade with numpad: [1] Reflex Sight (10 Resin), [2] Faster Fire Rate (20 Resin), [0] Cancel\"")
+                    SendToConsole("ent_fire text_resin SetText \"Choose upgrade with numpad: [7] Reflex Sight (10 Resin), [8] Faster Fire Rate (20 Resin), [9] Cancel\"")
                     SendToConsole("ent_fire text_resin Display")
                     Convars:SetStr("weapon_in_crafting_station", "smg")
                     local console = Entities:FindByClassname(nil, "prop_hlvr_crafting_station_console")
@@ -446,12 +446,12 @@ if class == "prop_hlvr_crafting_station_console" then
                     ent:SetParent(console, "item_attach")
                     
                     if player:Attribute_GetIntValue("smg_upgrade_aimdownsights", 0) == 0 then
-                        SendToConsole("bind KP_1 chooseupgrade1")
+                        SendToConsole("bind KP_7 chooseupgrade1")
                     elseif player:Attribute_GetIntValue("smg_upgrade_fasterfirerate", 0) == 0 then
-                        SendToConsole("bind KP_2 chooseupgrade2")
+                        SendToConsole("bind KP_8 chooseupgrade2")
                     end
 
-                    SendToConsole("bind KP_0 cancelupgrade")
+                    SendToConsole("bind KP_9 cancelupgrade")
                 end
             end
         end
@@ -495,7 +495,7 @@ if map == "a2_headcrabs_tunnel" then
 
     if name == "flashlight" then
         SendToConsole("ent_fire_output flashlight OnAttachedToHand")
-        SendToConsole("bind F inv_flashlight")
+        SendToConsole("bind KP_4 inv_flashlight")
         player:Attribute_SetIntValue("has_flashlight", 1)
         SendToConsole("ent_remove flashlight")
     end
