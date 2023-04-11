@@ -493,7 +493,7 @@ if GlobalSys:CommandLineCheck("-novr") then
             SendToConsole("bind leftarrow +iv_left")
             SendToConsole("bind rightarrow +iv_right")
             SendToConsole("bind MOUSE4 +iv_sprint")
-            SendToConsole("bind DEL +use;useextra")
+            SendToConsole("bind DEL \"+use;useextra\"")
             SendToConsole("bind PGUP pause")
             SendToConsole("bind PGDN noclip")
             SendToConsole("bind KP_4 +iv_sprint")
