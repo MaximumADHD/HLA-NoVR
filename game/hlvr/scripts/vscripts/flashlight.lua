@@ -2,8 +2,8 @@
 
 -- Convars for the flashlight 
 Convars:RegisterConvar("sv_flashlight_color", "255 255 255 255", "Color of the flashlight", FCVAR_REPLICATED)
-Convars:RegisterConvar("sv_flashlight_brightness", "2", "Brightness of the flashlight", FCVAR_REPLICATED)
-Convars:RegisterConvar("sv_flashlight_shadowtex_size", "128", "The X and Y size of the shadow texture", FCVAR_REPLICATED)
+Convars:RegisterConvar("sv_flashlight_brightness", "1", "Brightness of the flashlight", FCVAR_REPLICATED)
+Convars:RegisterConvar("sv_flashlight_shadowtex_size", "1024", "The X and Y size of the shadow texture", FCVAR_REPLICATED)
 Convars:RegisterConvar("sv_flashlight_range", "700", "max range of the flashlight", FCVAR_REPLICATED)
 
 local function destroy_flashlight()
@@ -15,7 +15,7 @@ local function destroy_flashlight()
 	if not flashlight_ent == nil and flashlight_ent:IsNull() then
 		flashlight_ent = nil
 	end
-	EmitSoundOnClient("HL2Player.FlashLightOff",player)
+	EmitSoundOnClient("HL2Player.FlashLightOff",Entities:GetLocalPlayer())
 end 
 
 local function create_flashlight()
@@ -46,7 +46,7 @@ local function create_flashlight()
  		indirectlight = "0",
  		attenuation1 = "0.0",
  		attenuation2 = "1.0",	
- 		innerconeangle = "20",
+ 		innerconeangle = "10",
 		outerconeangle = "32",
 		lightcookie = "flashlight" 
 	}
@@ -65,8 +65,11 @@ local function create_flashlight()
 		if flashlight_ent == nil then return end 
 		local player = Entities:GetLocalPlayer() 
 		local ang = player:EyeAngles()
-		-- TODO: Why does EyePosition break things sometimes?
-		flashlight_ent:SetLocalOrigin(player:EyePosition() - player:GetOrigin()) 
+		local flPos = player:EyePosition()
+		flPos.x = flPos.x + 1 -- near or far of player
+		flPos.y = flPos.y + 3.5 -- left or right 
+		flPos.z = flPos.z - 1 -- higher or lower of player
+		flashlight_ent:SetLocalOrigin(flPos - player:GetOrigin()) 
 		flashlight_ent:SetLocalAngles(ang.x, 0, 0)
 		return FrameTime()
 	end, "flashlight_think", 0)
@@ -80,3 +83,9 @@ Convars:RegisterCommand("inv_flashlight", function()
 		create_flashlight()
 	end 
 end, "Toggles the flashlight", 0)
+
+Convars:RegisterCommand("disable_flashlight", function()
+	if flashlight_ent ~= nil then
+		destroy_flashlight()
+	end 
+end, "Disables the flashlight", 0)
