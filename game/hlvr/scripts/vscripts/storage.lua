@@ -679,6 +679,7 @@ function Storage.Load(handle, name, default)
 end
 
 -- Done one by one for code hint purposes
+--[[
 CBaseEntity.SaveString  = Storage.SaveString
 CBaseEntity.SaveNumber  = Storage.SaveNumber
 CBaseEntity.SaveBoolean = Storage.SaveBoolean
@@ -696,7 +697,7 @@ CBaseEntity.LoadQAngle  = Storage.LoadQAngle
 CBaseEntity.LoadTable   = Storage.LoadTable
 CBaseEntity.LoadEntity  = Storage.LoadEntity
 CBaseEntity.Load        = Storage.Load
-
+]]--
 
 print("storage.lua initialized...")
 

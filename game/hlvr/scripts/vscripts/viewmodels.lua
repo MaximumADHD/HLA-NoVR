@@ -1,4 +1,4 @@
-require "wristpockets"
+local WristPockets = require "wristpockets"
 
 -- Display upgraded weapon viewmodels by withoutaface
 
@@ -10,19 +10,21 @@ local function PrecacheViewModels()
 	SpawnEntityFromTableAsynchronous("logic_script", ent_table, nil, nil);
 end
 
+local Viewmodels = {}
+
 -- Init is called in novr.lua
-function Viewmodels_Init()
+function Viewmodels:Init()
     -- Precache the viewmodels
     PrecacheViewModels()
     -- Set model after map load
     local player = Entities:GetLocalPlayer()
     player:SetThink(function()
-        Viewmodels_UpgradeModel()
+        Viewmodels:UpgradeModel()
     end, "ViewmodelUpgradeInit", 1)
 end
 
 -- Check for weapon upgrades and set the correct viewmodel
-function Viewmodels_UpgradeModel()
+function Viewmodels:UpgradeModel()
     local player = Entities:GetLocalPlayer()
 
     -- Fetch pistol upgrades
@@ -39,14 +41,13 @@ function Viewmodels_UpgradeModel()
     local pistol_viewmodel_shroud_ads = "models/weapons/v_pistol_shroud_ads.vmdl"
     local pistol_viewmodel_hopper = "models/weapons/v_pistol_hopper.vmdl"
     local pistol_viewmodel_hopper_ads = "models/weapons/v_pistol_hopper_ads.vmdl"
-    local pistol_viewmodel_base = "models/weapons/v_pistol.vmdl"
 
     -- Fetch shotgun upgrades
     local shotgun_doubleshot = player:Attribute_GetIntValue("shotgun_upgrade_doubleshot", 0)
     local shotgun_grenadelauncher = player:Attribute_GetIntValue("shotgun_upgrade_grenadelauncher", 0)
     local shotgun_hopper = player:Attribute_GetIntValue("shotgun_upgrade_hopper", 0)
 
-    local shotgun_playerhasgrenade = WristPockets_PlayerHasGrenade()
+    local shotgun_playerhasgrenade = WristPockets:PlayerHasGrenade()
 
     -- List of shotgun viewmodels
     local shotgun_search_str = "v_shotgun"
@@ -56,7 +57,6 @@ function Viewmodels_UpgradeModel()
     local shotgun_viewmodel_grenade_attached = "models/weapons/v_shotgun_grenade_attached.vmdl"
     local shotgun_viewmodel_grenade = "models/weapons/v_shotgun_grenade.vmdl"
     local shotgun_viewmodel_hopper = "models/weapons/v_shotgun_hopper.vmdl"
-    local shotgun_viewmodel_base = "models/weapons/v_shotgun.vmdl"
 
     -- Fetch smg1 upgrades
     local smg_aimdownsights = player:Attribute_GetIntValue("smg_upgrade_aimdownsights", 0)
@@ -68,7 +68,6 @@ function Viewmodels_UpgradeModel()
     local smg_viewmodel_holo = "models/weapons/v_smg1_holo.vmdl"
     local smg_viewmodel_holo_ads = "models/weapons/v_smg1_holo_ads.vmdl"
     local smg_viewmodel_powerpack = "models/weapons/v_smg1_powerpack.vmdl"
-    local smg_viewmodel_base = "models/weapons/v_smg1.vmdl"
     local smg_viewmodel_casing = "models/weapons/v_smg1_casing.vmdl"
     local smg_viewmodel_casing_ads = "models/weapons/v_smg1_casing_ads.vmdl"
 
@@ -226,7 +225,9 @@ Convars:RegisterCommand("viewmodel_update" , function()
     local player = Entities:GetLocalPlayer()
     if player ~= nil then
         player:SetThink(function()
-            Viewmodels_UpgradeModel()
+            Viewmodels:UpgradeModel()
         end, "ViewmodelUpdate", 0)
     end
 end, "function viewmodel_update", 0)
+
+return Viewmodels

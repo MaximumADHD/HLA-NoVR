@@ -1,7 +1,8 @@
 
 -- Display hud heart icons by withoutaface
+local HUDHearts = {}
 
-function HUDHearts_StartupPreparations()
+function HUDHearts:StartupPreparations()
 	SendToConsole("ent_remove text_hearts_background")
 	SendToConsole("ent_create game_text { targetname text_hearts_background effect 0 spawnflags 1 color \"121 97 11\" color2 \"0 0 0\" fadein 0 fadeout 0 channel 2 fxtime 0 holdtime 0.11 x 0.0277 y -0.0357 }")	
 
@@ -16,14 +17,14 @@ function HUDHearts_StartupPreparations()
 	if GetMapName() ~= "a1_intro_world" and GetMapName() ~= "a1_intro_world_2" then
 		local player = Entities:GetLocalPlayer()
 		player:SetThink(function()
-			HUDHearts_UpdateHealth()
+			HUDHearts:UpdateHealth()
 		end, "HUDHearts_MapChange", 1)
 	end
 
 	print("[HUDHearts] Start up done")
 end
 
-function HUDHearts_UpdateHealth()
+function HUDHearts:UpdateHealth()
 	local player = Entities:GetLocalPlayer()
 	local textEntity = Entities:FindByName(nil, "text_hearts")
 	local textEntityRed = Entities:FindByName(nil, "text_hearts_red")
@@ -91,17 +92,17 @@ function HUDHearts_UpdateHealth()
 	--print(string.format("[HUDHearts] Set heart icons to %s health", health))
 end
 
-function HUDHearts_StartUpdateLoop()
+function HUDHearts:StartUpdateLoop()
 	-- Update hud hearts
 	local player = Entities:GetLocalPlayer()
 	player:SetThink(function()
-		HUDHearts_UpdateHealth()
+		HUDHearts:UpdateHealth()
 		return 0.1
 	end, "HUDHearts_UpdateLoop", 0)
 	print("[HUDHearts] Start hud hearts update loop")
 end
 
-function HUDHearts_StopUpdateLoop()
+function HUDHearts:StopUpdateLoop()
 	-- Stop hud hearts update
 	local player = Entities:GetLocalPlayer()
 	player:StopThink("HUDHearts_UpdateLoop")
@@ -112,13 +113,15 @@ Convars:RegisterCommand("hudhearts_recreate" , function()
 	SendToConsole("ent_remove text_hearts_background")
 	SendToConsole("ent_remove text_hearts_red")
 	SendToConsole("ent_remove text_hearts")
-	HUDHearts_StartupPreparations()
+	HUDHearts:StartupPreparations()
 end, "Recreate hud heart icons", 0)
 
 Convars:RegisterCommand("hudhearts_startupdateloop" , function()
-	HUDHearts_StartUpdateLoop()
+	HUDHearts:StartUpdateLoop()
 end, "Start hud heart update loop", 0)
 
 Convars:RegisterCommand("hudhearts_stopupdateloop" , function()
-	HUDHearts_StopUpdateLoop()
+	HUDHearts:StopUpdateLoop()
 end, "Stop hud heart update loop", 0)
+
+return HUDHearts

@@ -6,16 +6,20 @@ Convars:RegisterConvar("sv_flashlight_brightness", "1", "Brightness of the flash
 Convars:RegisterConvar("sv_flashlight_shadowtex_size", "1024", "The X and Y size of the shadow texture", FCVAR_REPLICATED)
 Convars:RegisterConvar("sv_flashlight_range", "700", "max range of the flashlight", FCVAR_REPLICATED)
 
+local flashlight_ent
+
 local function destroy_flashlight()
 	if flashlight_ent ~= nil and not flashlight_ent:IsNull() then
 		flashlight_ent:Destroy()
 		flashlight_ent = nil
 	end 
+	
 	-- Fix if the flashlight was deleted but not set to nil
-	if not flashlight_ent == nil and flashlight_ent:IsNull() then
+	if flashlight_ent ~= nil and flashlight_ent:IsNull() then
 		flashlight_ent = nil
 	end
-	EmitSoundOnClient("HL2Player.FlashLightOff",Entities:GetLocalPlayer())
+
+	EmitSoundOnClient("HL2Player.FlashLightOff", Entities:GetLocalPlayer())
 end 
 
 local function create_flashlight()

@@ -13,7 +13,13 @@ local pistol_viewmodel_hopper = "models/weapons/v_pistol_hopper.vmdl"
 local pistol_viewmodel_hopper_ads = "models/weapons/v_pistol_hopper_ads.vmdl"
 
 -- LevelChange is called in novr.lua
-function ViewmodelAnimation_LevelChange()
+local Bindings = require "bindings"
+
+local ViewmodelAnimation = {
+    FOV_ADS_ZOOM = 40
+}
+
+function ViewmodelAnimation:LevelChange()
     -- Reset animation after map load
     local player = Entities:GetLocalPlayer()
     local viewmodel = Entities:FindByClassname(nil, "viewmodel")
@@ -28,21 +34,21 @@ function ViewmodelAnimation_LevelChange()
     end, "ViewmodelAnimationLevelChangeIdle", 2)
 end
 
-function ViewmodelAnimation_ADSZoom()
+function ViewmodelAnimation:ADSZoom()
     -- Prepare ads zoom objects
     local player = Entities:GetLocalPlayer()
 
     player:SetThink(function()
         SendToConsole("ent_remove ads_zoom")
-        SendToConsole(string.format("ent_create env_zoom { targetname ads_zoom FOV %s rate 0.5 }", FOV_ADS_ZOOM))
+        SendToConsole(string.format("ent_create env_zoom { targetname ads_zoom FOV %s rate 0.5 }", ViewmodelAnimation.FOV_ADS_ZOOM))
         SendToConsole("ent_remove ads_zoom_out")
-        SendToConsole(string.format("ent_create env_zoom { targetname ads_zoom_out FOV %s rate 0.2 }", FOV))
+        SendToConsole(string.format("ent_create env_zoom { targetname ads_zoom_out FOV %s rate 0.2 }", Bindings.FOV))
     end, "ViewmodelAnimationADSZoom", 1)
 
     print("[ViewmodelAnimation] ads zoom preparation done")
 end
 
-local function ViewmodelAnimation_PrepareAnimation(viewmodel, player)
+function ViewmodelAnimation:PrepareAnimation(viewmodel, player)
     -- Play a short animation so viewmodel will end it's cycle and has no active animation
     viewmodel:ResetSequence("anim_prepare")
 
@@ -53,7 +59,7 @@ local function ViewmodelAnimation_PrepareAnimation(viewmodel, player)
     -- If below 0.1 animations may not play!
 end
 
-function ViewmodelAnimation_ResetAnimation()
+function ViewmodelAnimation:ResetAnimation()
     local viewmodel = Entities:FindByClassname(nil, "viewmodel")
     if viewmodel then
         local viewmodel_name = viewmodel:GetModelName()
@@ -63,7 +69,7 @@ function ViewmodelAnimation_ResetAnimation()
 	end
 end
 
-function ViewmodelAnimation_PlayInspectAnimation()
+function ViewmodelAnimation:PlayInspectAnimation()
     local viewmodel = Entities:FindByClassname(nil, "viewmodel")
     local player = Entities:GetLocalPlayer()
 
@@ -75,12 +81,12 @@ function ViewmodelAnimation_PlayInspectAnimation()
             print(string.format("Play inspect for viewmodel %s on sequence %s", viewmodel_name, viewmodel_sequence))
 
             -- Set animation play length per model
-            animation_time = 2.3
+            local animation_time = 2.3
             if string.match(viewmodel_name, "v_pistol") then 
                 animation_time = 3.6
             end
 
-            ViewmodelAnimation_PrepareAnimation(viewmodel, player)
+            ViewmodelAnimation:PrepareAnimation(viewmodel, player)
 
             -- Inspect animation
             player:SetThink(function()
@@ -94,7 +100,7 @@ function ViewmodelAnimation_PlayInspectAnimation()
 	end
 end
 
-function ViewmodelAnimation_HIPtoADS()
+function ViewmodelAnimation:HIPtoADS()
     local viewmodel = Entities:FindByClassname(nil, "viewmodel")
     local player = Entities:GetLocalPlayer()
 
@@ -127,7 +133,7 @@ function ViewmodelAnimation_HIPtoADS()
         viewmodel_name = viewmodel:GetModelName()
 		print(string.format("Play hip to ads for viewmodel %s on sequence %s", viewmodel_name, viewmodel_sequence))
 
-		ViewmodelAnimation_PrepareAnimation(viewmodel, player)
+		ViewmodelAnimation:PrepareAnimation(viewmodel, player)
         
         -- HIP_TO_ADS
         player:SetThink(function()
@@ -137,7 +143,7 @@ function ViewmodelAnimation_HIPtoADS()
 	end
 end
 
-function ViewmodelAnimation_ADStoHIP()
+function ViewmodelAnimation:ADStoHIP()
     local viewmodel = Entities:FindByClassname(nil, "viewmodel")
     local player = Entities:GetLocalPlayer()
 
@@ -174,23 +180,25 @@ function ViewmodelAnimation_ADStoHIP()
         viewmodel:ResetSequence("ads_to_hip")
         
         player:SetThink(function()
-            ViewmodelAnimation_ResetAnimation()
+            ViewmodelAnimation:ResetAnimation()
         end, "ViewmodelADStoHIPAnimation", 0.4)
 	end
 end
 
-function ViewmodelAnimation_Reset()
-    ViewmodelAnimation_ResetAnimation()
-    cvar_setf("fov_desired", FOV)
+function ViewmodelAnimation:Reset()
+    ViewmodelAnimation:ResetAnimation()
+    cvar_setf("fov_desired", Bindings.FOV)
     cvar_setf("viewmodel_offset_x", 0)
     cvar_setf("viewmodel_offset_y", 0)
     cvar_setf("viewmodel_offset_z", 0)
 end
 
 Convars:RegisterCommand("viewmodel_inspect_animation" , function()
-	ViewmodelAnimation_PlayInspectAnimation()
+	ViewmodelAnimation:PlayInspectAnimation()
 end, "ViewmodelInspectAnimation", 0)
 
 Convars:RegisterCommand("viewmodel_reset" , function()
-	ViewmodelAnimation_Reset()
+	ViewmodelAnimation:Reset()
 end, "ViewmodelResetAnimation", 0)
+
+return ViewmodelAnimation
